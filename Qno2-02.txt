@@ -1,0 +1,85 @@
+############### MEDIAN FINING Qno # 02 ############
+
+#include <stdio.h>
+#include <stdlib.h>
+
+// Structure to represent a node in the linked list
+typedef struct Node {
+    int data;
+    struct Node* next;
+} Node;
+
+// Function to insert a new number into the linked list
+Node* insert(Node* head, int num) {
+    Node* newNode = (Node*)malloc(sizeof(Node));
+    if (newNode == NULL) {
+        printf("Memory allocation error.\n");
+        exit(1);
+    }
+    newNode->data = num;
+    newNode->next = NULL;
+
+    if (head == NULL || num < head->data) {
+        newNode->next = head;
+        head = newNode;
+    } else {
+        Node* current = head;
+        while (current->next != NULL && num >= current->next->data) {
+            current = current->next;
+        }
+        newNode->next = current->next;
+        current->next = newNode;
+    }
+
+    return head;
+}
+
+// Function to find the median of the linked list
+double findMedian(Node* head) {
+    Node* slow = head;
+    Node* fast = head;
+    Node* prev = NULL;
+
+    while (fast != NULL && fast->next != NULL) {
+        prev = slow;
+        slow = slow->next;
+        fast = fast->next->next;
+    }
+
+    if (fast == NULL) {
+        // Even number of elements
+        return (prev->data + slow->data) / 2.0;
+    } else {
+        // Odd number of elements
+        return slow->data;
+    }
+}
+
+int main() {
+    Node* head = NULL;
+    int num;
+
+    printf("Enter numbers (Ctrl + D to finish):\n");
+
+    while (scanf("%d", &num) != EOF) {
+        head = insert(head, num);
+        double median = findMedian(head);
+        printf("Median: %.1lf\n", median);
+    }
+
+    // Free the memory allocated for the linked list
+    Node* current = head;
+    while (current != NULL) {
+        Node* temp = current;
+        current = current->next;
+        free(temp);
+    }
+
+    return 0;
+}
+
+
+Same thing for this one also sir use your device or c compiler to find the
+answer as I have done it through your test cases as my input values. The reason
+I am not doing the file opening part is that its giving me error to open so 
+I put it this way kindly do let me know if this is correct or not.

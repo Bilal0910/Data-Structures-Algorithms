@@ -1,0 +1,95 @@
+########### C Traversing Transaction Method Qno 03 ############
+
+#include <stdio.h>
+#include <stdlib.h>
+
+struct Transaction {
+    int transactionId;
+    int transactionAmount;
+    struct Transaction* next;
+};
+
+struct Transaction* createTransaction(int id, int amount) {
+    struct Transaction* newTransaction = (struct Transaction*)malloc(sizeof(struct Transaction));
+    if (newTransaction) {
+        newTransaction->transactionId = id;
+        newTransaction->transactionAmount = amount;
+        newTransaction->next = NULL;
+    }
+    return newTransaction;
+}
+
+void insertTransaction(struct Transaction** head, int id, int amount) {
+    struct Transaction* newTransaction = createTransaction(id, amount);
+    if (newTransaction) {
+        newTransaction->next = *head;
+        *head = newTransaction;
+    }
+}
+
+void deleteTransaction(struct Transaction** head, int idToDelete) {
+    struct Transaction* current = *head;
+    struct Transaction* prev = NULL;
+
+    while (current != NULL && current->transactionId != idToDelete) {
+        prev = current;
+        current = current->next;
+    }
+
+    if (current == NULL) {
+        printf("Transaction with ID %d not found.\n", idToDelete);
+        return;
+    }
+
+    if (prev == NULL) {
+        *head = current->next;
+    } else {
+        prev->next = current->next;
+    }
+
+    free(current);
+}
+
+int main() {
+    int numberOfTransactions, numberOfFraudulentTransactions;
+
+    printf("Enter the number of transactions and the number of fraudulent transactions: ");
+    scanf("%d %d", &numberOfTransactions, &numberOfFraudulentTransactions);
+
+    struct Transaction* head = NULL;
+
+    printf("Enter transaction data in the format transactionId transactionAmount:\n");
+    for (int i = 0; i < numberOfTransactions; i++) {
+        int id, amount;
+        scanf("%d %d", &id, &amount);
+        insertTransaction(&head, id, amount);
+    }
+
+    printf("Enter the IDs of the fraudulent transactions:\n");
+    for (int i = 0; i < numberOfFraudulentTransactions; i++) {
+        int fraudulentId;
+        scanf("%d", &fraudulentId);
+        deleteTransaction(&head, fraudulentId);
+    }
+
+    printf("\nUpdated list of transactions:\n");
+    struct Transaction* current = head;
+    while (current != NULL) {
+        printf("%d,%d\n", current->transactionId, current->transactionAmount);
+        current = current->next;
+    }
+
+    // Free the memory allocated for the linked list.
+    while (head != NULL) {
+        struct Transaction* temp = head;
+        head = head->next;
+        free(temp);
+    }
+
+    return 0;
+}
+
+
+Done this with a little more with Bard as there were a ton of errors
+in this one but finally it ran with the correct transcation IDs and 
+the fraudelent ones inputing by me. 

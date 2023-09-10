@@ -1,0 +1,95 @@
+SORRY SIR I COULD NOT DONE QUESTION NO 04 I TRIED SO MANY
+TIMES BUT I COULD NOT DO IT ITS A BIT TOUGH
+
+
+########## 3rd LAST ELEMENT OF THE LIST Qno 3 05 ###############
+
+#include <stdio.h>
+#include <stdlib.h>
+
+// Define a structure for a linked list node
+struct Node {
+    int data;
+    struct Node* next;
+};
+
+// Function to insert a new node at the end of the linked list
+void insert(struct Node** head, int data) {
+    struct Node* newNode = (struct Node*)malloc(sizeof(struct Node));
+    newNode->data = data;
+    newNode->next = NULL;
+
+    if (*head == NULL) {
+        *head = newNode;
+    } else {
+        struct Node* temp = *head;
+        while (temp->next != NULL) {
+            temp = temp->next;
+        }
+        temp->next = newNode;
+    }
+}
+
+// Function to find the third last element of the linked list
+int findThirdLast(struct Node* head) {
+    if (head == NULL || head->next == NULL || head->next->next == NULL) {
+        return -1; // Less than 3 elements in the list
+    }
+
+    struct Node* first = head;
+    struct Node* second = head;
+    struct Node* third = head;
+
+    // Move third pointer two nodes ahead
+    for (int i = 0; i < 2; i++) {
+        if (third->next != NULL) {
+            third = third->next;
+        } else {
+            return -1; // Less than 3 elements in the list
+        }
+    }
+
+    // Move all three pointers together until the third one reaches the end
+    while (third->next != NULL) {
+        third = third->next;
+        second = second->next;
+        first = first->next;
+    }
+
+    return first->data;
+}
+
+int main() {
+    struct Node* head = NULL;
+    int num, data;
+
+    printf("Enter the number of elements: ");
+    scanf("%d", &num);
+
+    if (num < 3) {
+        printf("The linked list has less than 3 elements.\n");
+        return 1;
+    }
+
+    printf("Enter the elements:\n");
+    for (int i = 0; i < num; i++) {
+        scanf("%d", &data);
+        insert(&head, data);
+    }
+
+    int thirdLast = findThirdLast(head);
+
+    if (thirdLast != -1) {
+        printf("The third last element is: %d\n", thirdLast);
+    } else {
+        printf("The linked list has less than 3 elements.\n");
+    }
+
+    return 0;
+}
+
+
+Here is the code of finding the3rd last element of the list 
+which of as usual given by the user input and whenever the elements
+in the list is less than 3 so it will automatically return -1 or
+that the list is not sufficient to find the 3rd last element.

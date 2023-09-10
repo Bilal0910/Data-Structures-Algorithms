@@ -1,0 +1,131 @@
+############# LUCKY WINNER QUESTION NO # 1 ##############
+
+
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+
+struct Node {
+    int data;
+    struct Node* next;
+};
+
+struct LuckyWinner {
+    struct Node* head;
+    int size;
+};
+
+void ADD(struct LuckyWinner* list, int number) {
+    struct Node* new_node = (struct Node*)malloc(sizeof(struct Node));
+    new_node->data = number;
+    new_node->next = NULL;
+
+    if (list->head == NULL) {
+        list->head = new_node;
+    } else {
+        struct Node* current = list->head;
+        while (current->next != NULL) {
+            current = current->next;
+        }
+        current->next = new_node;
+    }
+
+    list->size++;
+}
+
+void DELETE(struct LuckyWinner* list) {
+    if (list->head == NULL) {
+        return; // Nothing to delete
+    }
+
+    if (list->size == 1) {
+        free(list->head);
+        list->head = NULL;
+    } else {
+        struct Node* current = list->head;
+        struct Node* prev = NULL;
+
+        while (current->next != NULL) {
+            prev = current;
+            current = current->next;
+        }
+
+        free(current);
+        prev->next = NULL;
+    }
+
+    list->size--;
+}
+
+void GetTrump(struct LuckyWinner* list) {
+    if (list->head == NULL) {
+        printf("No lucky winner.\n");
+        return;
+    }
+
+    int middle = list->size / 2;
+    struct Node* current = list->head;
+
+    for (int i = 0; i < middle; i++) {
+        current = current->next;
+    }
+
+    if (list->size % 2 == 0) {
+        printf("Lucky Winner(s): %d %d\n", current->data, current->next->data);
+    } else {
+        printf("Lucky Winner(s): %d\n", current->data);
+    }
+}
+
+int main() {
+    struct LuckyWinner lucky_winner;
+    lucky_winner.head = NULL;
+    lucky_winner.size = 0;
+
+    char command[10];
+    int number;
+
+    printf("Enter commands (ADD [number], DELETE, END):\n");
+
+    while (1) {
+        scanf("%s", command);
+
+        if (strcmp(command, "ADD") == 0) {
+            scanf("%d", &number);
+            ADD(&lucky_winner, number);
+        } else if (strcmp(command, "DELETE") == 0) {
+            DELETE(&lucky_winner);
+        } else if (strcmp(command, "END") == 0) {
+            break;
+        } else {
+            printf("Invalid command: %s\n", command);
+        }
+    }
+
+    GetTrump(&lucky_winner);
+
+    // Free allocated memory
+    struct Node* current = lucky_winner.head;
+    while (current != NULL) {
+        struct Node* temp = current;
+        current = current->next;
+        free(temp);
+    }
+
+    return 0;
+}
+
+
+
+
+
+Sir, In this code only one thing which I am unable to fix is that
+whenever I given a set of even numbers, the compiler is giving me the 
+last two digits which I have input as lucky winnners whereas the odd 
+numbers set is giving me the correct middle value as lucky winner and
+one more thing in this code sir. I dont have DevC as I told you before
+and I have done it using Programmiz C Compiler also my vs code is not 
+compiling my code so it is correct I have made it by myself and little 
+bit of error help from chatgpt and bard sp kindly run it on your device
+and last thing I was unable to open the file input system in all codes
+so instead of giving file input I took the user input method. Thanks
